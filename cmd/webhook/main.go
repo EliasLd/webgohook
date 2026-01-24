@@ -25,6 +25,6 @@ func main() {
 
 	http.Handle("/webhook", handler.NewWebhookHandler(secret))
 
-	fmt.Println("Webhook server listening on 127.0.0.1:" + port)
-	log.Fatal(http.ListenAndServe("127.0.0.1:"+port, nil))
+	fmt.Println("Webhook server listening on :" + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
