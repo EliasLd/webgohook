@@ -1,0 +1,5 @@
+{
+    "service-name1": <deploy-endpoint-port1>,
+    "service-name2": <deploy-endpoint-port2>,
+    ...
+}
