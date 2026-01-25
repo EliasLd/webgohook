@@ -1,5 +1,6 @@
 {
-    "service-name1": <deploy-endpoint-port1>,
-    "service-name2": <deploy-endpoint-port2>,
-    ...
+    "github-repository-name": {
+        "url": <public-or-local-url>,
+        "token_env": <name-of-env-variable-containing-the-secret
+    }
 }

@@ -9,14 +9,20 @@ After you cloned this repository, you'll need to edit `.env.example` and `config
 **`.env`**
  - `WEBHOOK_SECRET`: base64 encoded string, can be generate by running (for example) the following command `head -c 30 /dev/random | base64`
  - `WEBHOOK_PORT`: the port used to listen for github webhooks
+ - `DEPLOY_TOKEN_<NAME>`: token deployment that will be included a specifique `X-Deploy-Token`
 
 **`config/services.json`**
- - **Key**: the name of the service you want to send a request next (should be in webhook request body)
- > Note: The corresponding service should have a dedicated endpoint to receive this request
- - **Value**: the listening port of the requested service (e.g: 9001)
+```json
+{
+    "github-repository-name": {
+        "url": "<public-or-local-url>",
+        "token_env": "<name-of-env-variable-containing-the-secret>"
+    }
+}
+```
 
- > [!TIP]
- > Don't forget to rename files to `.env` and `config/services.json` after editing the .example versions
+> [!TIP]
+> Don't forget to rename files to `.env` and `config/services.json` after editing the .example versions
 
 ## Build
 
