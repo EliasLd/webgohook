@@ -10,6 +10,13 @@ import (
 	"github.com/EliasLd/webgohook/internal/security"
 )
 
+type githubPayload struct {
+	Ref        string `json:"ref"`
+	Repository struct {
+		Name string `json:"name"`
+	} `json:"repository"`
+}
+
 type WebhookHandler struct {
 	secret string
 }
@@ -21,7 +28,7 @@ func NewWebhookHandler(secret string) *WebhookHandler {
 func (h *WebhookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
-		http.Error(w, "cannort read request body", http.StatusBadRequest)
+		http.Error(w, "cannot read request body", http.StatusBadRequest)
 		return
 	}
 
@@ -32,19 +39,23 @@ func (h *WebhookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Parse github payload
-	var payload struct {
-		Repository struct {
-			Name string `json:"name"`
-		} `json:"repository"`
-	}
-
+	var payload githubPayload
 	if err := json.Unmarshal(body, &payload); err != nil {
 		http.Error(w, "invalid json payload", http.StatusBadRequest)
 		return
 	}
 
 	repo := payload.Repository.Name
-	fmt.Printf("Webhook received for repo: %s\n", repo)
+	ref := payload.Ref
+
+	fmt.Printf("Webhook received for repo: %s on %s\n", repo, ref)
+
+	// Ignore non-main branches
+	if ref != "refs/heads/main" {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("ignored: not main branch"))
+		return
+	}
 
 	// Trigger corresponding service
 	deploy.CallService(repo)
