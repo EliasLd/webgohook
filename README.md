@@ -9,7 +9,7 @@ After you cloned this repository, you'll need to edit `.env.example` and `config
 **`.env`**
  - `WEBHOOK_SECRET`: base64 encoded string, can be generate by running (for example) the following command `head -c 30 /dev/random | base64`
  - `WEBHOOK_PORT`: the port used to listen for github webhooks
- - `DEPLOY_TOKEN_<NAME>`: token deployment that will be included a specifique `X-Deploy-Token`
+ - `DEPLOY_TOKEN_<NAME>`: token deployment that will be included in a specifique `X-Deploy-Token` header in the request
 
 **`config/services.json`**
 ```json
